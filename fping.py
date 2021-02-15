@@ -16,7 +16,7 @@ for scanned in fping_set:
         continue
     else:
         ip_add = {"status": "2", "description": "Scanned and marked as alive", "custom_fields": {"Scanned":"1"}, "address": str(scanned)}
-        ip_link = 'https://HOSTNAME/api/ipam/ip-addresses/'
+        ip_link = "https://HOSTNAME/api/ipam/ip-addresses/"  #Replace HOSTNAME with NetBox URL/IP
         ip_post = requests.post(ip_link, json=ip_add, headers=headers, verify=False)
         log = open('logs/fping_run.log', 'a')
         log_msg = time_stamp + ':' + 'Host:' + str(scanned) + ' has been added.' + '\n'
