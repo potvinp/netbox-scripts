@@ -3,7 +3,7 @@ from fping_api import *
 
 time_stamp = time.strftime("%Y-%m-%d %H:%M:%S")
 
-netbox_set = ip_address()
+netbox_set = ipv4_address()
 fping_set = set()
 
 with open('fping_hosts') as fping:
