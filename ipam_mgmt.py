@@ -11,7 +11,7 @@ time_stamp = time.strftime("%Y-%m-%d %H:%M:%S")
 def ipam_mgmt_ip():
 
   #Create "mgmt" network interface for existing devices.
-  cur.execute("SELECT id,name FROM dcim_device;")
+  cur.execute("SELECT id,name FROM dcim_devices;")
   for db_fetch in cur.fetchall():
 
     try:
@@ -22,13 +22,13 @@ def ipam_mgmt_ip():
       #Ignore Loopbacks
       if re.findall(r'127.0.[0-1].1', ipv4_list):
         continue
-      cur.execute("INSERT INTO dcim_interface(name, form_factor, mgmt_only, description, device_id) VALUES (%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING",
+      cur.execute("INSERT INTO dcim_interfaces(name, form_factor, mgmt_only, description, device_id) VALUES (%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING",
                   ("mgmt", "0", "t", db_fetch[1], db_fetch[0]))
       dcim_iface_indx_rst()
       conn.commit()
 
 
-      cur.execute("SELECT id FROM dcim_interface where name='mgmt' AND device_id=%s;" %(db_fetch[0]))
+      cur.execute("SELECT id FROM dcim_interfaces where name='mgmt' AND device_id=%s;" %(db_fetch[0]))
       iface_id = cur.fetchall()
       cur.execute("SELECT description FROM ipam_ipaddress where description='%s';" %(db_fetch[1]))
       mgmt_ip_desc = cur.fetchall()
@@ -62,13 +62,13 @@ def ipam_mgmt_ip():
   cur.execute("SELECT id,family,description FROM ipam_ipaddress WHERE family=4;")
   for prim_ip_set in cur.fetchall():
     #print str(prim_ip_set[0]) + str(str(prim_ip_set[1]))
-    cur.execute("UPDATE dcim_device SET primary_ip4_id = %s WHERE name=%s", (prim_ip_set[0], prim_ip_set[2]))
+    cur.execute("UPDATE dcim_devices SET primary_ip4_id = %s WHERE name=%s", (prim_ip_set[0], prim_ip_set[2]))
     conn.commit()
 
   cur.execute("SELECT id,family,description FROM ipam_ipaddress WHERE family=6;")
   for prim_ip_set in cur.fetchall():
     #print str(prim_ip_set[0]) + str(str(prim_ip_set[1]))
-    cur.execute("UPDATE dcim_device SET primary_ip6_id = %s WHERE name=%s", (prim_ip_set[0], prim_ip_set[2]))
+    cur.execute("UPDATE dcim_devices SET primary_ip6_id = %s WHERE name=%s", (prim_ip_set[0], prim_ip_set[2]))
     conn.commit()
 
 ipam_mgmt_ip()
