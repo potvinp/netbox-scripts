@@ -6,10 +6,10 @@ import requests, json
 headers = {'Authorization': 'Token: YOUR TOKEN'}
 
 
-def ipv4_prefix():
+def ip_prefix():
 #Prefix list API. Initial API call to retreive first batch.
     prefix_list = []
-    api_init = "https://HOSTNAME/api/ipam/prefixes/?status=active&family=4" #Replace HOSTNAME with NetBox URL/IP
+    api_init = "https://HOSTNAME/api/ipam/prefixes/?status=active" #Replace HOSTNAME with NetBox URL/IP
     api_prefixes = requests.get(api_init, headers=headers, verify=False)
     z_prefixes = json.loads(api_prefixes.text)
     for prefixes in z_prefixes['results']:
@@ -26,10 +26,10 @@ def ipv4_prefix():
         return prefix_list
 
 
-def ipv4_address():
+def ip_address():
 #Initial API call to retreive first batch.
     ip_set = set()
-    api_link = "https://HOSTNAME/api/ipam/ip-addresses/?limit=1000&family=4" #Replace HOSTNAME with NetBox URL/IP
+    api_link = "https://HOSTNAME/api/ipam/ip-addresses/?limit=1000" #Replace HOSTNAME with NetBox URL/IP
     api_init = requests.get(api_link, headers=headers, verify=False)
     z_ip = json.loads(api_init.text)
     for ips in z_ip['results']:
