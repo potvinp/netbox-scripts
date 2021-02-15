@@ -16,9 +16,9 @@ def ipam_mgmt_ip():
 
     try:
       ipv4_list = socket.gethostbyname(db_fetch[1])
-      #print str(db_fetch[1]) + "<<<" + str(ipv4_list) 
+      #print str(db_fetch[1]) + "<<<" + str(ipv4_list)
       ipv6_list = socket.getaddrinfo(db_fetch[1], None, socket.AF_INET6)
-      #print str(db_fetch[1]) + "<<<" + str(ipv6_list[0][4][0]) 
+      #print str(db_fetch[1]) + "<<<" + str(ipv6_list[0][4][0])
       #Ignore Loopbacks
       if re.findall(r'127.0.[0-1].1', ipv4_list):
         continue
@@ -37,18 +37,18 @@ def ipam_mgmt_ip():
           #print "Unique Entry"
           cur.execute("INSERT INTO ipam_ipaddress(created, last_updated, family, address, description, interface_id, tenant_id, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (nat_inside_id) DO NOTHING",
                    (date, time_stamp, "4", ipv4_list, db_fetch[1], iface_id[0], "2", "1"))
-          print "Adding:" + str(db_fetch[1]) + "  " + str(ipv4_list)
+          print("Adding:" + str(db_fetch[1]) + "  " + str(ipv4_list))
           ipam_ip_indx_rst()
           cur.execute("INSERT INTO ipam_ipaddress(created, last_updated, family, address, description, interface_id, tenant_id, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (nat_inside_id) DO NOTHING",
                    (date, time_stamp, "6", ipv6_list[0][4][0], db_fetch[1], iface_id[0], "2", "1"))
-          print "Adding:" + str(db_fetch[1]) + "  " + str(ipv6_list[0][4][0])
+          print("Adding:" + str(db_fetch[1]) + "  " + str(ipv6_list[0][4][0]))
           ipam_ip_indx_rst()
           conn.commit()
       elif str(mgmt_ip_desc[0][0]) == str(db_fetch[1]):
-          print "Hostanme:" +  str(db_fetch[1]) + " " + "already has a management IP" + " >> " + str(ipv4_list) + " >> " + str(ipv6_list[0][4][0])
+          print("Hostanme:" +  str(db_fetch[1]) + " " + "already has a management IP" + " >> " + str(ipv4_list) + " >> " + str(ipv6_list[0][4][0]))
           continue
       else:
-          print "None found. A new DB record is added" + str(uniq_mgmt_ip[0][0])
+          print("None found. A new DB record is added" + str(uniq_mgmt_ip[0][0]))
           cur.execute("INSERT INTO ipam_ipaddress(created, last_updated, family, address, description, interface_id, tenant_id, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (nat_inside_id) DO NOTHING",
                  (date, time_stamp, "4", ipv4_list, db_fetch[1], int_id[0], "2", "1"))
           cur.execute("INSERT INTO ipam_ipaddress(created, last_updated, family, address, description, interface_id, tenant_id, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s) ON CONFLICT (nat_inside_id) DO NOTHING",
@@ -71,5 +71,5 @@ def ipam_mgmt_ip():
     cur.execute("UPDATE dcim_device SET primary_ip6_id = %s WHERE name=%s", (prim_ip_set[0], prim_ip_set[2]))
     conn.commit()
 
-ipam_mgmt_ip() 
+ipam_mgmt_ip()
 dcim_device_indx_rst()

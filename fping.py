@@ -21,4 +21,4 @@ for scanned in fping_set:
         log = open('logs/fping_run.log', 'a')
         log_msg = time_stamp + ':' + 'Host:' + str(scanned) + ' has been added.' + '\n'
         log.write(log_msg)
-        log.close 
+        log.close
