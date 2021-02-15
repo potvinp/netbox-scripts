@@ -3,13 +3,13 @@ import requests, json
 
 
 #NetBox API Token
-headers = {'Authorization': 'YOUR TOKEN'}
+headers = {'Authorization': 'Token: YOUR TOKEN'}
 
 
 def ipv4_prefix():
 #Prefix list API. Initial API call to retreive first batch.
     prefix_list = []
-    api_init = "https://HOSTNAME/api/ipam/prefixes/?status=1&family=4"
+    api_init = "https://HOSTNAME/api/ipam/prefixes/?status=active&family=4"
     api_prefixes = requests.get(api_init, headers=headers, verify=False)
     z_prefixes = json.loads(api_prefixes.text)
     for prefixes in z_prefixes[u'results']:
