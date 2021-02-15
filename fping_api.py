@@ -16,16 +16,14 @@ def ipv4_prefix():
         prefix_list.append(prefixes['prefix'])
 
 #Prefix list API. Sebsequent API request(s) due to API pagination. The default MAX is value "?limit=1000"
-    for subsequent in z_prefixes['next']:
-        if z_prefixes['next']:
-            http_req_prefixes = requests.get(z_prefixes['next'], headers=headers, verify=False)
-            z_prefixes = json.loads(http_req_prefixes.text)
-            for prefixes in z_prefixes['results']:
-                #print prefixes['prefix']
-                prefix_list.append(prefixes['prefix'])
-    return prefix_list
-
-
+    if(type(z_prefixes) is None):
+        http_req_prefixes = requests.get(z_prefixes['next'], headers=headers, verify=False)
+        z_prefixes = json.loads(http_req_prefixes.text)
+        for prefixes in z_prefixes['results']:
+            #print prefixes['prefix']
+            prefix_list.append(prefixes['prefix'])
+    else:
+        return prefix_list
 
 
 def ipv4_address():
@@ -42,6 +40,6 @@ def ipv4_address():
             http_req_prefixes = requests.get(z_ip['next'], headers=headers, verify=False)
             z_ip = json.loads(http_req_prefixes.text)
             for subsequent in z_ip['results']:
-                #print subsequent['address']
+                #print subsequent[u'address']
                 ip_set.add(subsequent['address'])
     return ip_set
