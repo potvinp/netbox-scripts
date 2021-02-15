@@ -1,9 +1,9 @@
-# NetBox custom scripts (Python 2.7)
+# NetBox custom scripts (Python 3.x)
 This is an attempt to share some of my work with the [NetBox](https://github.com/digitalocean/netbox) community. I plan on adding more scripts later on.
 # Dependencies
 Make sure you have all dependencies installed i.e.  
 ```
-$sudo pip install sys, time, re, socket, psycopg2
+$sudo pip3 install sys time re socket psycopg2
 ```
 If you don't have pip installed then follow this [guide](https://pip.pypa.io/en/stable/installing/) 
 # Installation
